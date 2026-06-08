@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación de Salud Respiratoria — Rafael Quintana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --teal:        #0D5C63;
+  --teal-mid:    #1A7A83;
+  --teal-light:  #E8F4F5;
+  --teal-pale:   #F0F8F9;
+  --coral:       #C4522A;
+  --coral-mid:   #D96B40;
+  --coral-light: #FAF0EB;
+  --coral-pale:  #FDF6F3;
+  --ink:         #1C1C1E;
+  --ink-soft:    #3D3D3F;
+  --ink-muted:   #6B6B6E;
+  --ink-faint:   #A0A0A3;
+  --cream:       #F5F0E8;
+  --cream-warm:  #EDE8DF;
+  --white:       #FDFCFA;
+  --border:      rgba(13,92,99,0.12);
+  --border-mid:  rgba(13,92,99,0.2);
+  --mind-color:  #2E5FA3;
+  --mind-bg:     #EEF2FA;
+  --mind-dark:   #1A3D6E;
+  --body-color:  #0D5C63;
+  --body-bg:     #E8F4F5;
+  --body-dark:   #083E44;
+  --sport-color: #C4522A;
+  --sport-bg:    #FAF0EB;
+  --sport-dark:  #7A2F10;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  padding: 2.5rem 1rem 5rem;
+  line-height: 1.6;
+}
+
+#app { max-width: 600px; margin: 0 auto; }
+
+.brand-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--border);
+}
+.brand-name {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--teal);
+  letter-spacing: .2px;
+}
+.brand-handle {
+  font-size: 11px;
+  color: var(--ink-faint);
+  font-weight: 400;
+  letter-spacing: .3px;
+}
+.brand-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.brand-dot svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 1.8; }
+
+.intro-wrap {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 24px rgba(13,92,99,0.07);
+}
+.intro-hero {
+  background: var(--teal);
+  padding: 3rem 2.2rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.intro-hero::before {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.04);
+  top: -100px; right: -80px;
+}
+.intro-hero::after {
+  content: '';
+  position: absolute;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(196,82,42,.15);
+  bottom: -50px; left: -30px;
+}
+.intro-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  margin-bottom: 14px;
+  position: relative; z-index: 1;
+}
+.intro-hero h1 {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 34px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 14px;
+  position: relative; z-index: 1;
+}
+.intro-hero p {
+  font-size: 14px;
+  color: rgba(255,255,255,.65);
+  line-height: 1.7;
+  max-width: 380px;
+  position: relative; z-index: 1;
+}
+.intro-body {
+  background: var(--white);
+  padding: 2rem 2.2rem 2.2rem;
+}
+.pillars-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 1.8rem;
+}
+.pi-item {
+  padding: 1rem .8rem;
+  border-radius: var(--radius-md);
+  text-align: center;
+  border: 1px solid var(--border);
+  background: var(--cream);
+}
+.pi-icon { font-size: 20px; margin-bottom: 6px; }
+.pi-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.pi-desc { font-size: 11px; color: var(--ink-muted); line-height: 1.4; }
+
+.start-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: .2px;
+  transition: background .2s, transform .1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 1rem;
+}
+.start-btn:hover  { background: #0A4A50; }
+.start-btn:active { transform: scale(.99); }
+.privacy-note {
+  font-size: 11px;
+  color: var(--ink-faint);
+  text-align: center;
+  margin-top: 10px;
+  letter-spacing: .2px;
+}
+
+.progress-wrap { margin-bottom: 1.6rem; }
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.progress-pillar {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+.progress-count { font-size: 12px; color: var(--ink-muted); }
+.progress-bar {
+  height: 2px;
+  background: var(--cream-warm);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 1px;
+  transition: width .45s cubic-bezier(.4,0,.2,1);
+}
+
+.q-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 2rem 2rem 1.6rem;
+  box-shadow: 0 2px 20px rgba(13,92,99,.05);
+}
+.q-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 1.2rem;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+.q-text {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 1.4rem;
+  line-height: 1.4;
+}
+.q-sub {
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin: -0.8rem 0 1.2rem;
+  line-height: 1.65;
+  padding: 10px 14px;
+  background: var(--teal-pale);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--teal-mid);
+}
+
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.5rem; }
+.opt-btn {
+  padding: 13px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-mid);
+  background: var(--cream);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all .15s;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  text-align: left;
+}
+.opt-btn:hover { background: var(--teal-pale); border-color: var(--teal-mid); }
+.opt-btn.selected {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: #fff;
+}
+.opt-btn .pts {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink-faint);
+  margin-left: 6px;
+  white-space: nowrap;
+  opacity: .7;
+}
+.opt-btn.selected .pts { color: rgba(255,255,255,.6); }
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: .8rem;
+  border-top: 1px solid var(--border);
+}
+.btn-back {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-back:hover { color: var(--ink); }
+.btn-next {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-mid);
+  background: var(--white);
+  cursor: pointer;
+  transition: all .15s;
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-next:hover:not(:disabled) { background: var(--cream); }
+.btn-next.active {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+}
+.btn-next:disabled { opacity: .3; cursor: not-allowed; }
+
+.score-hero {
+  background: var(--teal);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem 2rem 2.2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 30px rgba(13,92,99,.2);
+}
+.score-hero::before {
+  content: '';
+  position: absolute;
+  width: 260px; height: 260px; border-radius: 50%;
+  background: rgba(255,255,255,.04);
+  top: -80px; right: -60px;
+}
+.score-hero::after {
+  content: '';
+  position: absolute;
+  width: 140px; height: 140px; border-radius: 50%;
+  background: rgba(196,82,42,.18);
+  bottom: -40px; left: 20px;
+}
+.score-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.5);
+  margin-bottom: 12px;
+  position: relative; z-index: 1;
+}
+.score-number {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 82px;
+  font-weight: 400;
+  color: #fff;
+  line-height: 1;
+  position: relative; z-index: 1;
+}
+.score-denom {
+  font-size: 20px;
+  color: rgba(255,255,255,.4);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+}
+.score-level-badge {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 5px 18px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: .4px;
+  position: relative; z-index: 1;
+}
+
+.pillars-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
+.p-card {
+  padding: 1.1rem 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--white);
+  text-align: center;
+  box-shadow: 0 1px 8px rgba(13,92,99,.04);
+}
+.p-name {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  margin-bottom: 5px;
+}
+.p-score {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1;
+}
+.p-denom { font-size: 14px; color: var(--ink-muted); font-family: 'DM Sans', sans-serif; font-weight: 300; }
+.p-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 6px;
+  letter-spacing: .3px;
+}
+.p-bar-wrap { height: 2px; border-radius: 1px; margin-top: 10px; background: var(--cream-warm); }
+.p-bar-fill { height: 100%; border-radius: 1px; }
+
+.section-heading {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--ink-faint);
+  margin: 1.8rem 0 .9rem;
+}
+
+.radar-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.interp-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem 1.6rem;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 6px rgba(13,92,99,.03);
+}
+.interp-card h4 {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 7px;
+}
+.interp-card p {
+  font-size: 13px;
+  color: var(--ink-muted);
+  line-height: 1.7;
+}
+
+.imt-card {
+  background: var(--teal-pale);
+  border: 1px solid rgba(13,92,99,.15);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem 1.6rem;
+  margin-bottom: 8px;
+}
+.imt-card h4 {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--teal);
+  margin-bottom: 10px;
+}
+.imt-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.imt-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--white);
+  color: var(--teal);
+  border: 1px solid rgba(13,92,99,.15);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.imt-card p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+
+/* ── CTA Card — dynamic per profile ── */
+.cta-card {
+  background: var(--teal);
+  border-radius: var(--radius-xl);
+  padding: 2.2rem 2rem;
+  margin-top: 1.4rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 40px rgba(13,92,99,.22);
+}
+.cta-card::before {
+  content: '';
+  position: absolute;
+  width: 240px; height: 240px; border-radius: 50%;
+  background: rgba(255,255,255,.04);
+  top: -80px; right: -60px;
+}
+.cta-card::after {
+  content: '';
+  position: absolute;
+  width: 120px; height: 120px; border-radius: 50%;
+  background: rgba(196,82,42,.18);
+  bottom: -30px; left: 10px;
+}
+.cta-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.5);
+  margin-bottom: 10px;
+  position: relative; z-index: 1;
+}
+.cta-card h3 {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 26px;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 10px;
+  line-height: 1.25;
+  position: relative; z-index: 1;
+}
+.cta-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,.65);
+  line-height: 1.7;
+  margin-bottom: 1.4rem;
+  position: relative; z-index: 1;
+}
+.cta-bullets { list-style: none; margin-bottom: 1.6rem; position: relative; z-index: 1; }
+.cta-bullets li {
+  font-size: 13px;
+  color: rgba(255,255,255,.82);
+  padding: 4px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  line-height: 1.55;
+}
+.cta-check {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #9FE1CB;
+}
+.cta-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,.1);
+  margin: 1.4rem 0 1.2rem;
+  position: relative; z-index: 1;
+}
+
+/* Lead capture section */
+.lead-capture {
+  position: relative; z-index: 1;
+}
+.lead-capture-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,.7);
+  margin-bottom: 8px;
+  letter-spacing: .2px;
+}
+.lead-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.lead-email-input {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,.22);
+  background: rgba(255,255,255,.1);
+  font-size: 13px;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color .15s, background .15s;
+}
+.lead-email-input::placeholder { color: rgba(255,255,255,.4); }
+.lead-email-input:focus { border-color: rgba(255,255,255,.5); background: rgba(255,255,255,.14); }
+.lead-send-btn {
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.25);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+  transition: background .15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.lead-send-btn:hover { background: rgba(255,255,255,.22); }
+.lead-send-btn:disabled { opacity: .5; cursor: not-allowed; }
+.success-msg {
+  font-size: 12px; color: #9FE1CB; margin-bottom: 12px;
+  position: relative; z-index: 1; display: flex; align-items: center; gap: 6px;
+}
+.error-msg {
+  font-size: 12px; color: #FFAA99; margin-bottom: 12px;
+  position: relative; z-index: 1; display: flex; align-items: center; gap: 6px;
+}
+
+/* WhatsApp CTA button — single prominent action */
+.whatsapp-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: var(--radius-md);
+  background: #25D366;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: .2px;
+  transition: background .2s, transform .1s;
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  position: relative; z-index: 1;
+  margin-bottom: 10px;
+}
+.whatsapp-btn:hover { background: #1ebe5a; }
+.whatsapp-btn:active { transform: scale(.99); }
+
+.pdf-btn-secondary {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: rgba(255,255,255,.7);
+  border: 1px solid rgba(255,255,255,.2);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  transition: background .15s, color .15s;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  position: relative; z-index: 1;
+}
+.pdf-btn-secondary:hover { background: rgba(255,255,255,.08); color: #fff; }
+
+.brand-footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: .3px;
+}
+.brand-footer strong { font-weight: 600; color: var(--teal); }
+
+.restart-btn {
+  display: block;
+  margin: 1.4rem auto 0;
+  font-size: 12px;
+  color: var(--ink-faint);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: .2px;
+}
+.restart-btn:hover { color: var(--ink-muted); }
+
+@media (max-width: 480px) {
+  body { padding: 1.5rem .75rem 4rem; }
+  .pillars-intro  { grid-template-columns: 1fr; }
+  .pillars-row    { grid-template-columns: 1fr; }
+  .options-grid   { grid-template-columns: 1fr; }
+  .intro-hero h1  { font-size: 26px; }
+  .score-number   { font-size: 64px; }
+  .cta-card h3    { font-size: 22px; }
+  .q-text         { font-size: 19px; }
+  .intro-hero { padding: 2.2rem 1.5rem 2rem; }
+  .intro-body { padding: 1.5rem; }
+  .q-card { padding: 1.5rem 1.2rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div class="brand-header">
+    <div>
+      <div class="brand-name">Rafael Quintana</div>
+      <div class="brand-handle">Terapia Respiratoria · @terapiarespiratoria_rq</div>
+    </div>
+    <div class="brand-dot">
+      <!-- Lung icon -->
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v7"/>
+        <path d="M12 10c0 0-5 1-6 5s0 6 3 6 4-3 3-6"/>
+        <path d="M12 10c0 0 5 1 6 5s0 6-3 6-4-3-3-6"/>
+      </svg>
+    </div>
+  </div>
+
+  <div id="screen"></div>
+
+  <div class="brand-footer">
+    <strong>Rafael Quintana</strong> · Terapia Respiratoria · @terapiarespiratoria_rq
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ─────────────────────────────────────────
+   CONFIG — COMPLETA ESTOS VALORES
+─────────────────────────────────────────
+
+  EMAILJS (alerta en tiempo real a tu correo):
+  1. Ve a https://www.emailjs.com y crea cuenta gratuita
+  2. Crea un Email Service conectado a tu Gmail/Outlook
+  3. Crea un Email Template con estas variables:
+     {{lead_email}} {{score_total}} {{nivel}} {{mente}} {{cuerpo}} {{deporte}} {{perfil_tipo}} {{fecha}}
+  4. Pega los IDs abajo
+
+  GOOGLE SHEETS (base de datos permanente):
+  1. Ve a https://script.google.com
+  2. Crea nuevo proyecto > pega el script que está al final de este archivo
+  3. Despliega como Web App (Execute as: Me, Who has access: Anyone)
+  4. Copia la URL generada y pégala en SHEETS_WEBHOOK_URL abajo
+
+───────────────────────────────────────── */
+const EMAILJS_PUBLIC_KEY  = '7sSeJmiD0i5KNt8w6';
+const EMAILJS_SERVICE_ID  = 'service_r3s7d4w';
+const EMAILJS_TEMPLATE_ID = 'template_5xekrt9';
+
+// URL del Google Apps Script Web App (ver instrucciones al final)
+const SHEETS_WEBHOOK_URL = 'TU_GOOGLE_APPS_SCRIPT_URL';
+
+/* ─────────────────────────────────────────
+   DATA
+───────────────────────────────────────── */
+const PILLARS = [
+  { id:'mind',  name:'Mente',   color:'#2E5FA3', bg:'#EEF2FA', dark:'#1A3D6E', bar:'#2E5FA3' },
+  { id:'body',  name:'Cuerpo',  color:'#0D5C63', bg:'#E8F4F5', dark:'#083E44', bar:'#0D5C63' },
+  { id:'sport', name:'Deporte', color:'#C4522A', bg:'#FAF0EB', dark:'#7A2F10', bar:'#C4522A' }
+];
+
+const QS = [
+  { p:'mind',  t:'Cuando me siento estresado o ansioso, mi respiración me ayuda a calmarme.' },
+  { p:'mind',  t:'Puedo mantener el enfoque en lo que hago sin que mi mente se disperse constantemente.' },
+  { p:'mind',  t:'Ante una situación difícil o tensa, puedo usar conscientemente mi respiración para tranquilizarme.' },
+  { p:'mind',  t:'Al hablar en público, en una reunión importante o bajo presión, siento que mi respiración me sostiene.' },
+  { p:'mind',  t:'Uso la respiración de forma activa para bajar la ansiedad o silenciar los pensamientos en exceso.' },
+  { p:'body',  t:'Me despierto con la boca seca o con sabor pastoso.',
+    sub:'Nota: responder "Siempre" aquí es señal de que respiras por la boca mientras duermes — algo que afecta tu descanso y tu salud respiratoria.',
+    opts:['Siempre (0)','A menudo (1)','A veces (2)','Nunca (3)'] },
+  { p:'body',  t:'Cuando respiro profundo, siento que el aire me llega al abdomen y a las costillas — no solo al pecho.' },
+  { p:'body',  t:'Después de soltar el aire, hay un momento de quietud antes de que sienta la necesidad de volver a respirar.' },
+  { p:'body',  t:'Mi nariz se siente despejada y puedo respirar por ella con comodidad cuando estoy en reposo.' },
+  { p:'body',  t:'Mi BOLT Score es…',
+    sub:'¿Qué mide? Tu tolerancia al CO₂ — un indicador directo de qué tan eficiente es tu respiración.\nCómo medirlo: inhala normal → exhala suave → tapa la nariz → cuenta los segundos hasta que sientas el primer deseo de respirar.',
+    opts:['Menos de 10 seg (0 pts)','10–15 seg (1 pt)','15–25 seg (2 pts)','Más de 25 seg (3 pts)'] },
+  { p:'sport', t:'Durante una caminata rápida o ejercicio suave, puedo mantener la respiración por la nariz sin dificultad.' },
+  { p:'sport', t:'Mientras me ejercito, siento que mi respiración es controlada — no siento que el aire no me alcanza.' },
+  { p:'sport', t:'Después de un esfuerzo intenso, recupero la respiración normal en menos de 2 minutos.' },
+  { p:'sport', t:'Mi MBT Score es de 60 pasos o más.',
+    sub:'¿Qué mide? Tu capacidad respiratoria en movimiento — cuánto aguanta tu cuerpo con el oxígeno disponible mientras caminas.\nCómo medirlo: exhala suave → tapa la nariz → camina a ritmo normal → cuenta los pasos hasta sentir el primer impulso de respirar.' },
+  { p:'sport', t:'Hago algún ejercicio o práctica específica para mejorar mi respiración (terapia respiratoria, yoga, meditación, ejercicios de fuerza inspiratoria, etc.).' }
+];
+
+const DOPTS = ['Nunca (0)','A veces (1)','A menudo (2)','Siempre (3)'];
+
+let answers    = new Array(15).fill(null);
+let current    = 0;
+let phase      = 'intro';
+let radarChart = null;
+let leadSaved  = false; // evitar duplicados
+
+/* ─────────────────────────────────────────
+   HELPERS
+───────────────────────────────────────── */
+const getOpts = q => q.opts || DOPTS;
+
+function calcScores() {
+  const s = { mind:0, body:0, sport:0 };
+  QS.forEach((q,i) => { if (answers[i] !== null) s[q.p] += answers[i]; });
+  return s;
+}
+
+function levelInfo(score, max) {
+  const r = score / max;
+  if (r >= 0.80) return { label:'Avanzado',     bg:'#EAF3DE', color:'#27500A' };
+  if (r >= 0.55) return { label:'Construyendo', bg:'#FEF3E2', color:'#7A4800' };
+  return               { label:'Inicial',      bg:'#FDECEA', color:'#7A1F1F' };
+}
+
+// Detecta si el usuario es más atleta o paciente
+function detectProfileType(s) {
+  return s.sport >= 9 ? 'atleta' : 'paciente';
+}
+
+function imtRec(s) {
+  const total = s.mind + s.body + s.sport;
+  const bolt  = answers[9] ?? 0;
+  if (total <= 20 || bolt <= 1) return {
+    phase:'Fase 1 — Iniciación',
+    sessions:'30',
+    freq:'2 veces/día · 30 respiraciones',
+    load:'Carga: 30 % de tu PIM',
+    weeks:'~4 semanas',
+    detail:'El punto de partida es enseñarle a tu sistema nervioso y a tus músculos respiratorios a trabajar con cargas bajas, corrigiendo la forma en que mueves el diafragma y construyendo tolerancia de forma segura. Avanzar demasiado rápido genera fatiga sin adaptación real.'
+  };
+  if (total <= 32 || bolt <= 2) return {
+    phase:'Fase 2 — Desarrollo',
+    sessions:'20–24',
+    freq:'1–2 veces/día · 30 respiraciones',
+    load:'Carga: 50 % PIM con progresión del 5 % semanal',
+    weeks:'~3–4 semanas',
+    detail:'Diseñada para deportistas recreativos y personas con capacidad física moderada. Trabajar al 50% de tu fuerza máxima respiratoria genera las adaptaciones musculares más importantes sin generar fatiga excesiva del diafragma.'
+  };
+  return {
+    phase:'Fase 3 — Alto Rendimiento',
+    sessions:'12–16',
+    freq:'1 vez/día · 30 respiraciones',
+    load:'Carga: 60–80 % PIM · protocolo de alta intensidad',
+    weeks:'~2–3 semanas',
+    detail:'Para atletas con una base respiratoria sólida. Trabajar a alta intensidad mejora significativamente la eficiencia con la que respiras, retrasa la fatiga muscular y acelera tu recuperación después del esfuerzo.'
+  };
+}
+
+function interpText(pid, score) {
+  const m = {
+    mind:{
+      h:'Tu relación con la respiración como herramienta mental es sólida. La usas de forma activa para calmarte y mantener el foco bajo presión. El siguiente paso es afinar esa habilidad en los momentos de máxima exigencia — competencia, situaciones de alto estrés o decisiones importantes.',
+      m:'Tienes conciencia de que la respiración puede ayudarte, pero todavía no es un recurso confiable cuando más lo necesitas. La clave es practicarla en situaciones reales de estrés, no solo cuando estás tranquilo.',
+      l:'Esta es el área con mayor potencial de cambio inmediato. Con tan solo 5 minutos diarios de práctica consciente, puedes empezar a notar diferencias en cómo respondes al estrés en pocas semanas.'
+    },
+    body:{
+      h:'Tu base fisiológica es excelente: respiras por la nariz, mueves bien el diafragma (el músculo principal de la respiración) y toleras bien el CO₂ (el gas que regula tu impulso de respirar). Este es el cimiento ideal para todo lo demás.',
+      m:'Hay señales positivas, pero con patrones concretos a mejorar. Trabajar la respiración nasal durante el sueño y aprender a mover mejor el diafragma puede elevar este pilar de forma notable en pocas semanas.',
+      l:'Tu mecánica respiratoria en reposo necesita atención prioritaria. Respirar por la boca, llenar solo el pecho al respirar y tener baja tolerancia al CO₂ son patrones que afectan directamente tu energía, tu sueño y tu salud en general.'
+    },
+    sport:{
+      h:'Gestionas bien tu respiración durante el esfuerzo y te recuperas con rapidez. El siguiente escalón es el entrenamiento de fuerza de los músculos respiratorios con mayor intensidad para seguir mejorando tu rendimiento.',
+      m:'Tienes buen potencial. Aprender a respirar por la nariz a intensidades moderadas y hacer ejercicios de retención de aire caminando puede generar una diferencia concreta y medible en tu capacidad física en pocas semanas.',
+      l:'La prioridad es aprender a manejar activamente la sensación de falta de aire durante el esfuerzo. El entrenamiento de los músculos respiratorios desde cargas bajas, combinado con ejercicios de retención progresiva, es tu punto de partida ideal.'
+    }
+  };
+  const t = m[pid];
+  return score >= 12 ? t.h : score >= 7 ? t.m : t.l;
+}
+
+/* CTA dinámico según perfil y score */
+function ctaContent(s, profileType) {
+  const total = s.mind + s.body + s.sport;
+  const lvl   = levelInfo(total, 45);
+
+  if (profileType === 'atleta') {
+    if (total >= 33) return {
+      eyebrow: 'Atleta · Nivel Avanzado',
+      title:   'Tienes la base. Es hora de pasar a la optimización.',
+      sub:     'Tu respiración ya es una ventaja — pero hay margen real. Un protocolo de alto rendimiento calibrado a tus métricas puede reducir tu tiempo, retrasar la fatiga y acelerar tu recuperación.',
+      bullets: [
+        'Medición de PIM para calibrar tu protocolo con precisión',
+        'Protocolo IMT de alta intensidad (60–80% PIM)',
+        'Medición de VO2 funcional y umbral ventilatorio',
+        'Estrategias de respiración para competencia',
+        'Seguimiento de BOLT y MBT cada 2 semanas'
+      ],
+      waMsg: encodeURIComponent('Hola Rafael, acabo de completar el assessment respiratorio. Soy atleta con nivel Avanzado y quiero hablar sobre el protocolo de alto rendimiento.')
+    };
+    return {
+      eyebrow: 'Atleta · Potencial Detectado',
+      title:   'Tu rendimiento está limitado por tu respiración — y eso se puede cambiar.',
+      sub:     'Con un programa de 6 semanas específico para atletas, puedes mejorar tu resistencia, recuperarte más rápido y subir de intensidad sin colapsar la ventilación.',
+      bullets: [
+        'Evaluación de tu capacidad ventilatoria actual',
+        'Medición de PIM para diseñar tu protocolo IMT exacto',
+        'Plan IMT progresivo adaptado a tu deporte',
+        'Técnicas de control respiratorio bajo esfuerzo',
+        'Métricas reales antes y después del programa'
+      ],
+      waMsg: encodeURIComponent('Hola Rafael, acabo de completar el assessment respiratorio. Soy atleta y quiero saber más sobre el programa de 6 semanas para mejorar mi rendimiento.')
+    };
+  }
+
+  // Paciente / salud
+  if (total >= 33) return {
+    eyebrow: 'Salud · Nivel Avanzado',
+    title:   'Tu respiración ya trabaja para ti. Mantén el avance.',
+    sub:     'Tienes una base sólida. Una evaluación de seguimiento cada 2 meses y un plan de mantenimiento te aseguran no perder lo ganado — y seguir mejorando.',
+    bullets: [
+      'Medición de PIM como línea base de tu fuerza muscular respiratoria',
+      'Evaluación de mantenimiento con métricas BOLT y MBT',
+      'Ajuste de protocolo según tu etapa actual',
+      'Plan de 4 semanas de consolidación',
+      'Acceso a seguimiento mensual por WhatsApp'
+    ],
+    waMsg: encodeURIComponent('Hola Rafael, completé el assessment respiratorio. Mi nivel es Avanzado y quiero agendar una evaluación de seguimiento.')
+  };
+  if (total >= 18) return {
+    eyebrow: 'Salud · En Construcción',
+    title:   'Estás a semanas de sentir una diferencia real.',
+    sub:     'Hay patrones concretos que ajustar. Con un programa estructurado de 6–8 semanas puedes mejorar tu tolerancia al esfuerzo, reducir la sensación de falta de aire y respirar mejor en tu vida diaria.',
+    bullets: [
+      'Evaluación clínica de tu mecánica respiratoria',
+      'Medición de PIM para prescribir la carga IMT correcta',
+      'Plan IMT personalizado de 6–8 semanas',
+      'Seguimiento semanal de progreso con métricas',
+      'Protocolo diferenciado según tu condición base'
+    ],
+    waMsg: encodeURIComponent('Hola Rafael, acabo de hacer el assessment respiratorio. Estoy en nivel intermedio y quiero saber más sobre el programa de 6-8 semanas.')
+  };
+  return {
+    eyebrow: 'Salud · Punto de Partida',
+    title:   'Tu respiración necesita atención — y hay mucho terreno por ganar.',
+    sub:     'Los patrones que identificamos tienen solución directa. En 4 semanas de trabajo estructurado puedes notar cambios reales en cómo respiras, duermes y te esfuerzas.',
+    bullets: [
+      'Diagnóstico completo de tu patrón respiratorio',
+      'Medición de PIM para calibrar la carga inicial con seguridad',
+      'Corrección de la forma en que mueves el diafragma al respirar',
+      'Protocolo de iniciación IMT (30% PIM)',
+      'Seguimiento quincenal con re-evaluación BOLT'
+    ],
+    waMsg: encodeURIComponent('Hola Rafael, hice el assessment respiratorio y mi resultado es Inicial. Quiero hablar sobre el programa de 4 semanas para mejorar mi respiración.')
+  };
+}
+
+/* ─────────────────────────────────────────
+   LEAD CAPTURE — Google Sheets + EmailJS
+───────────────────────────────────────── */
+async function saveLead(email) {
+  const s           = calcScores();
+  const tot         = s.mind + s.body + s.sport;
+  const lvl         = levelInfo(tot, 45);
+  const profileType = detectProfileType(s);
+  const fecha       = new Date().toLocaleString('es-VE', { timeZone: 'America/Caracas' });
+
+  // Mensaje personalizado según perfil para el correo al lead
+  const mensajePerfil = profileType === 'atleta'
+    ? `Tu perfil es de atleta. Basado en tus resultados, hay margen real para mejorar tu rendimiento desde la respiración. Un protocolo estructurado puede marcar una diferencia concreta en tu resistencia, recuperación y tiempos.`
+    : tot >= 33
+    ? `Tu nivel es Avanzado — tienes una base sólida. Una evaluación de seguimiento periódica te ayudará a mantener y seguir mejorando lo que ya has construido.`
+    : tot >= 18
+    ? `Tu nivel es intermedio. Hay patrones concretos que trabajar. Con un programa de 6 a 8 semanas puedes sentir una diferencia real en cómo respiras en tu día a día y bajo esfuerzo.`
+    : `Tus resultados muestran un punto de partida claro. Hay mucho terreno por ganar — y los cambios con trabajo estructurado pueden notarse en pocas semanas.`;
+
+  // 1. Google Sheets (base de datos)
+  if (SHEETS_WEBHOOK_URL && SHEETS_WEBHOOK_URL !== 'TU_GOOGLE_APPS_SCRIPT_URL') {
+    try {
+      await fetch(SHEETS_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          score_total: tot,
+          nivel: lvl.label,
+          mente: s.mind,
+          cuerpo: s.body,
+          deporte: s.sport,
+          perfil: profileType,
+          fecha
+        })
+      });
+    } catch(e) { console.warn('Sheets error:', e); }
+  }
+
+  // 2. EmailJS — alerta a Rafael
+  if (EMAILJS_PUBLIC_KEY !== 'TU_PUBLIC_KEY') {
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        lead_email:   email,
+        score_total:  String(tot) + ' / 45',
+        nivel:        lvl.label,
+        mente:        s.mind + '/15',
+        cuerpo:       s.body + '/15',
+        deporte:      s.sport + '/15',
+        perfil_tipo:  profileType,
+        fecha
+      }, EMAILJS_PUBLIC_KEY);
+    } catch(e) { console.warn('EmailJS alerta error:', e); }
+
+    // 3. EmailJS — reporte al lead
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, 'template_xn1h0f6', {
+        lead_email:     email,
+        score_total:    String(tot) + ' / 45',
+        nivel:          lvl.label,
+        mente:          s.mind + '/15',
+        cuerpo:         s.body + '/15',
+        deporte:        s.sport + '/15',
+        mensaje_perfil: mensajePerfil,
+        fecha
+      }, EMAILJS_PUBLIC_KEY);
+    } catch(e) { console.warn('EmailJS lead error:', e); }
+  }
+}
+
+/* ─────────────────────────────────────────
+   PDF GENERATOR
+───────────────────────────────────────── */
+function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit:'mm', format:'a4' });
+  const s   = calcScores();
+  const tot = s.mind + s.body + s.sport;
+  const lvl = levelInfo(tot, 45);
+  const imt = imtRec(s);
+  const date = new Date().toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' });
+
+  doc.setFillColor(13, 92, 99);
+  doc.rect(0, 0, 210, 50, 'F');
+  doc.setFillColor(196, 82, 42);
+  doc.circle(185, 8, 22, 'F');
+  doc.setFillColor(13, 92, 99);
+  doc.circle(185, 8, 16, 'F');
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(9); doc.setFont('helvetica','bold');
+  doc.text('RAFAEL QUINTANA', 18, 18);
+  doc.setFontSize(8); doc.setFont('helvetica','normal');
+  doc.setTextColor(180, 220, 222);
+  doc.text('Terapia Respiratoria  ·  @terapiarespiratoria_rq', 18, 25);
+  doc.setFontSize(18); doc.setFont('helvetica','bold');
+  doc.setTextColor(255, 255, 255);
+  doc.text('Evaluación de Salud Respiratoria', 18, 40);
+  doc.setFontSize(8); doc.setFont('helvetica','normal');
+  doc.setTextColor(180, 220, 222);
+  doc.text(date, 18, 47);
+
+  let y = 65;
+
+  doc.setFillColor(13, 92, 99);
+  doc.roundedRect(14, y - 5, 182, 42, 4, 4, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(28); doc.setFont('helvetica','bold');
+  doc.text(String(tot) + ' / 45', 105, y + 14, { align:'center' });
+  doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.setTextColor(180, 220, 222);
+  doc.text('Índice de Salud Respiratoria  ·  ' + lvl.label, 105, y + 26, { align:'center' });
+  y += 50;
+
+  const colW = 58;
+  const pillarData = [
+    { name:'MENTE',   score: s.mind,  color:[46,95,163] },
+    { name:'CUERPO',  score: s.body,  color:[13,92,99]  },
+    { name:'DEPORTE', score: s.sport, color:[196,82,42] }
+  ];
+  pillarData.forEach((pl, i) => {
+    const x = 14 + i * (colW + 4);
+    const lv = levelInfo(pl.score, 15);
+    doc.setFillColor(...pl.color);
+    doc.roundedRect(x, y - 2, colW, 28, 3, 3, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(7); doc.setFont('helvetica','bold');
+    doc.text(pl.name, x + colW/2, y + 5, { align:'center' });
+    doc.setFontSize(18); doc.setFont('helvetica','bold');
+    doc.text(String(pl.score) + '/15', x + colW/2, y + 18, { align:'center' });
+  });
+  y += 38;
+
+  const sections = [
+    { title:'MENTE',   score: s.mind,  text: interpText('mind', s.mind)  },
+    { title:'CUERPO',  score: s.body,  text: interpText('body', s.body)  },
+    { title:'DEPORTE', score: s.sport, text: interpText('sport',s.sport) }
+  ];
+
+  sections.forEach(sec => {
+    if (y > 240) { doc.addPage(); y = 20; }
+    doc.setFontSize(8); doc.setFont('helvetica','bold');
+    doc.setTextColor(100, 100, 130);
+    doc.text(sec.title + ' — ' + sec.score + '/15', 16, y); y += 5;
+    doc.setFontSize(9); doc.setFont('helvetica','normal');
+    doc.setTextColor(60, 60, 70);
+    const lines = doc.splitTextToSize(sec.text, 178);
+    doc.text(lines, 16, y);
+    y += lines.length * 5 + 8;
+  });
+
+  if (y > 220) { doc.addPage(); y = 20; }
+
+  doc.setFontSize(8); doc.setFont('helvetica','bold');
+  doc.setTextColor(100, 100, 130);
+  doc.text('ENTRENAMIENTO DE FUERZA RESPIRATORIA — IMT', 16, y); y += 6;
+
+  doc.setFillColor(232, 244, 245);
+  doc.roundedRect(14, y - 2, 180, 60, 3, 3, 'F');
+  doc.setFontSize(11); doc.setFont('helvetica','bold');
+  doc.setTextColor(13, 92, 99);
+  doc.text('Protocolo recomendado: ' + imt.phase, 20, y + 7);
+  doc.setFontSize(9); doc.setFont('helvetica','normal');
+  doc.setTextColor(40, 60, 62);
+  [imt.freq, imt.load, imt.sessions + '  ·  ' + imt.weeks].forEach((sp, i) => {
+    doc.text('· ' + sp, 20, y + 16 + i * 6);
+  });
+  doc.setTextColor(70, 90, 92);
+  const dl = doc.splitTextToSize(imt.detail, 170);
+  doc.text(dl, 20, y + 34);
+  y += 66;
+
+  if (y > 255) { doc.addPage(); y = 20; }
+
+  doc.setFillColor(13, 92, 99);
+  doc.roundedRect(14, y, 182, 36, 4, 4, 'F');
+  doc.setFillColor(196, 82, 42);
+  doc.roundedRect(14, y, 4, 36, 2, 2, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(12); doc.setFont('helvetica','bold');
+  doc.text('El siguiente paso es tuyo', 105, y + 12, { align:'center' });
+  doc.setFontSize(9); doc.setFont('helvetica','normal');
+  doc.setTextColor(180, 220, 222);
+  doc.text('Escríbeme por WhatsApp: +58 414 223 8924', 105, y + 20, { align:'center' });
+  doc.text('@terapiarespiratoria_rq  ·  Rafael Quintana', 105, y + 29, { align:'center' });
+
+  doc.setFontSize(7); doc.setTextColor(160, 170, 175);
+  doc.text('Evaluación de Salud Respiratoria  ·  Rafael Quintana  ·  Terapia Respiratoria', 105, 294, { align:'center' });
+
+  doc.save('reporte-respiratorio-rafael-quintana.pdf');
+}
+
+/* ─────────────────────────────────────────
+   RENDER FUNCTIONS
+───────────────────────────────────────── */
+function renderIntro() {
+  return `
+  <div class="intro-wrap">
+    <div class="intro-hero">
+      <div class="intro-eyebrow">Evaluación Respiratoria Personalizada</div>
+      <h1>Descubre el estado real de tu respiración</h1>
+      <p>15 preguntas · 3 pilares: Mente · Cuerpo · Deporte<br>Obtén tu Índice de Salud Respiratoria y un plan de acción concreto.</p>
+    </div>
+    <div class="intro-body">
+      <div class="pillars-intro">
+        <div class="pi-item">
+          <div class="pi-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Brain -->
+              <path d="M11 5C11 5 9 4 7.5 5C6 6 5.5 7.5 6 9C5 9.5 4 10.5 4 12C4 13.5 5 14.5 6 15C6 16.5 7 18 9 18C10 18 11 17 11 17" stroke="#2E5FA3" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11 5C11 5 13 4 14.5 5C16 6 16.5 7.5 16 9C17 9.5 18 10.5 18 12C18 13.5 17 14.5 16 15C16 16.5 15 18 13 18C12 18 11 17 11 17" stroke="#2E5FA3" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11 5V17" stroke="#2E5FA3" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M6 11.5H8M14 11.5H16" stroke="#2E5FA3" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="pi-label" style="color:var(--mind-dark)">Mente</div>
+          <div class="pi-desc">Regulación emocional y claridad bajo presión</div>
+        </div>
+        <div class="pi-item">
+          <div class="pi-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Person standing -->
+              <circle cx="11" cy="4.5" r="2" stroke="#0D5C63" stroke-width="1.6"/>
+              <path d="M7 10C7 7.8 8.8 7 11 7C13.2 7 15 7.8 15 10V13H7V10Z" stroke="#0D5C63" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 13V19M14 13V19" stroke="#0D5C63" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M7 9.5L5 12M15 9.5L17 12" stroke="#0D5C63" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="pi-label" style="color:var(--body-dark)">Cuerpo</div>
+          <div class="pi-desc">Mecánica respiratoria y tolerancia al CO₂</div>
+        </div>
+        <div class="pi-item">
+          <div class="pi-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Person running -->
+              <circle cx="14.5" cy="4" r="1.8" stroke="#C4522A" stroke-width="1.5"/>
+              <path d="M13 6.5L10 10L6 11.5" stroke="#C4522A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 10L11 14L8 18" stroke="#C4522A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13 6.5L16 9L18 8" stroke="#C4522A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11 14L14 16L15 19" stroke="#C4522A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="pi-label" style="color:var(--sport-dark)">Deporte</div>
+          <div class="pi-desc">Eficiencia y recuperación bajo esfuerzo</div>
+        </div>
+      </div>
+      <button class="start-btn" onclick="startQuiz()">
+        Comenzar evaluación — es gratis
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <p class="privacy-note">Sin spam. Tu información es privada.</p>
+    </div>
+  </div>`;
+}
+
+function renderQuestion(idx) {
+  const q   = QS[idx];
+  const pl  = PILLARS.find(p => p.id === q.p);
+  const pct = Math.round((idx / 15) * 100);
+  const opts = getOpts(q);
+  const sel  = answers[idx];
+
+  return `
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span class="progress-pillar" style="color:${pl.dark}">${pl.name}</span>
+      <span class="progress-count">${idx + 1} / 15 · ${pct}%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width:${pct}%; background:${pl.color}"></div>
+    </div>
+  </div>
+  <div class="q-card">
+    <div class="q-pill" style="background:${pl.bg}; color:${pl.dark}">
+      <span>●</span> ${pl.name.toUpperCase()}
+    </div>
+    <p class="q-text">${q.t}</p>
+    ${q.sub ? `<p class="q-sub">${q.sub}</p>` : ''}
+    <div class="options-grid">
+      ${opts.map((o, i) => `
+        <button class="opt-btn ${sel === i ? 'selected' : ''}"
+          onclick="selectOpt(${idx}, ${i})"
+          style="${sel === i ? `background:${pl.color};border-color:${pl.color};` : ''}">
+          <span>${o}</span>
+          <span class="pts">${i}pt${i !== 1 ? 's' : ''}</span>
+        </button>`).join('')}
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="goBack(${idx})">
+        ${idx > 0 ? `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Atrás` : ''}
+      </button>
+      <button class="btn-next ${sel !== null ? 'active' : ''}"
+        onclick="goNext(${idx})" ${sel === null ? 'disabled' : ''}>
+        ${idx < 14 ? 'Siguiente' : 'Ver mi reporte'}
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>`;
+}
+
+function renderResults() {
+  const s           = calcScores();
+  const tot         = s.mind + s.body + s.sport;
+  const lvl         = levelInfo(tot, 45);
+  const imt         = imtRec(s);
+  const profileType = detectProfileType(s);
+  const cta         = ctaContent(s, profileType);
+
+  const waLink = `https://wa.me/584142238924?text=${cta.waMsg}`;
+
+  const pillsHTML = PILLARS.map(pl => {
+    const sc = s[pl.id];
+    const lv = levelInfo(sc, 15);
+    const bw = Math.round((sc / 15) * 100);
+    return `
+    <div class="p-card">
+      <div class="p-name" style="color:${pl.dark}">${pl.name}</div>
+      <div class="p-score" style="color:${pl.color}">${sc}<span class="p-denom">/15</span></div>
+      <span class="p-badge" style="background:${lv.bg};color:${lv.color}">${lv.label}</span>
+      <div class="p-bar-wrap"><div class="p-bar-fill" style="width:${bw}%;background:${pl.bar}"></div></div>
+    </div>`;
+  }).join('');
+
+  const interpHTML = PILLARS.map(pl => {
+    const sc = s[pl.id];
+    return `
+    <div class="interp-card">
+      <h4 style="color:${pl.color}">${pl.name} <span style="color:var(--ink-muted);font-weight:400;font-size:15px">— ${levelInfo(sc, 15).label}</span></h4>
+      <p>${interpText(pl.id, sc)}</p>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="results">
+
+    <div class="score-hero">
+      <div class="score-eyebrow">Índice de Salud Respiratoria</div>
+      <div>
+        <span class="score-number">${tot}</span>
+        <span class="score-denom"> / 45</span>
+      </div>
+      <span class="score-level-badge" style="background:${lvl.bg};color:${lvl.color}">${lvl.label}</span>
+    </div>
+
+    <div class="pillars-row">${pillsHTML}</div>
+
+    <div class="radar-card">
+      <canvas id="radarChart" width="220" height="220"
+        role="img"
+        aria-label="Gráfico radar de tu perfil respiratorio: Mente ${s.mind}/15, Cuerpo ${s.body}/15, Deporte ${s.sport}/15">
+        Mente: ${s.mind}/15 · Cuerpo: ${s.body}/15 · Deporte: ${s.sport}/15
+      </canvas>
+    </div>
+
+    <div class="section-heading">Interpretación por pilar</div>
+    ${interpHTML}
+
+    <div class="section-heading">Entrenamiento de fuerza respiratoria — IMT</div>
+    <div class="imt-card">
+      <h4>Protocolo recomendado: ${imt.phase}</h4>
+      <div class="imt-tags">
+        <span class="imt-tag"><b>Sesiones</b> ${imt.sessions}</span>
+        <span class="imt-tag"><b>Frecuencia</b> ${imt.freq}</span>
+        <span class="imt-tag"><b>Duración</b> ${imt.weeks}</span>
+      </div>
+      <p>${imt.detail}</p>
+    </div>
+
+    <div class="cta-card">
+      <div class="cta-eyebrow">${cta.eyebrow}</div>
+      <h3>${cta.title}</h3>
+      <p class="cta-sub">${cta.sub}</p>
+      <ul class="cta-bullets">
+        ${cta.bullets.map(b => `<li><span class="cta-check">✓</span>${b}</li>`).join('')}
+      </ul>
+
+      <hr class="cta-divider">
+
+      <div class="lead-capture">
+        <div class="lead-capture-label">Recibe tu reporte completo en tu correo</div>
+        <div class="lead-input-row">
+          <input class="lead-email-input" type="email" id="leadEmailInput" placeholder="tu@correo.com" />
+          <button class="lead-send-btn" id="leadSendBtn" onclick="handleLeadCapture()">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1l13 6.5L1 14V9l9-1.5L1 6V1z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            Enviar
+          </button>
+        </div>
+        <div id="leadSuccessMsg" class="success-msg" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#9FE1CB" stroke-width="1.4"/><path d="M4 7l2 2 4-4" stroke="#9FE1CB" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Listo — revisa tu bandeja de entrada
+        </div>
+        <div id="leadErrorMsg" class="error-msg" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#FFAA99" stroke-width="1.4"/><path d="M7 4v3M7 9.5v.5" stroke="#FFAA99" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Ingresa un correo válido para continuar.
+        </div>
+      </div>
+
+      <hr class="cta-divider">
+
+      <button class="whatsapp-btn" onclick="window.open('${waLink}', '_blank')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Hablar conmigo por WhatsApp
+      </button>
+
+      <button class="pdf-btn-secondary" onclick="downloadPDF()">
+        <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><path d="M7.5 1v9M4 7l3.5 3.5L11 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Descargar reporte en PDF
+      </button>
+    </div>
+
+    <button class="restart-btn" onclick="restart()">↺ Reiniciar evaluación</button>
+  </div>`;
+}
+
+/* ─────────────────────────────────────────
+   LEAD CAPTURE HANDLER
+───────────────────────────────────────── */
+async function handleLeadCapture() {
+  const emailEl  = document.getElementById('leadEmailInput');
+  const btn      = document.getElementById('leadSendBtn');
+  const successEl = document.getElementById('leadSuccessMsg');
+  const errorEl   = document.getElementById('leadErrorMsg');
+
+  const email = emailEl ? emailEl.value.trim() : '';
+  if (!email || !email.includes('@')) {
+    if (errorEl) { errorEl.style.display = 'flex'; errorEl.textContent = 'Ingresa un correo válido para continuar.'; }
+    return;
+  }
+  if (errorEl) errorEl.style.display = 'none';
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Guardando…'; }
+
+  await saveLead(email);
+  leadSaved = true;
+
+  if (successEl) successEl.style.display = 'flex';
+  if (btn) { btn.disabled = true; btn.textContent = '✓ Enviado'; }
+
+  // Auto-download PDF after lead saved
+  setTimeout(() => downloadPDF(), 800);
+}
+
+/* ─────────────────────────────────────────
+   STATE HANDLERS
+───────────────────────────────────────── */
+function startQuiz() { current = 0; phase = 'quiz'; render(); }
+
+function selectOpt(idx, val) { answers[idx] = val; render(); }
+
+function goBack(idx) {
+  if (idx > 0) { current = idx - 1; render(); }
+  else { phase = 'intro'; render(); }
+}
+
+function goNext(idx) {
+  if (answers[idx] === null) return;
+  if (idx < 14) { current = idx + 1; render(); }
+  else { phase = 'results'; render(); }
+}
+
+function restart() {
+  answers = new Array(15).fill(null);
+  current = 0; phase = 'intro'; leadSaved = false; render();
+}
+
+/* ─────────────────────────────────────────
+   MAIN RENDER
+───────────────────────────────────────── */
+function render() {
+  const sc = document.getElementById('screen');
+  if (phase === 'intro') { sc.innerHTML = renderIntro(); return; }
+  if (phase === 'quiz')  { sc.innerHTML = renderQuestion(current); return; }
+  if (phase === 'results') {
+    sc.innerHTML = renderResults();
+    if (radarChart) { radarChart.destroy(); radarChart = null; }
+    const s = calcScores();
+    radarChart = new Chart(document.getElementById('radarChart'), {
+      type: 'radar',
+      data: {
+        labels: ['Mente','Cuerpo','Deporte'],
+        datasets: [{
+          label: 'Tu perfil',
+          data: [s.mind, s.body, s.sport],
+          backgroundColor: 'rgba(13,92,99,.12)',
+          borderColor: '#0D5C63',
+          pointBackgroundColor: '#C4522A',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 1.5,
+          pointRadius: 5,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          r: {
+            min: 0, max: 15,
+            ticks: { stepSize: 5, font: { size: 10 }, color: '#A0A0A3' },
+            grid:  { color: 'rgba(13,92,99,.1)' },
+            pointLabels: { font: { size: 13, family: 'DM Sans' }, color: '#3D3D3F' }
+          }
+        }
+      }
+    });
+  }
+}
+
+render();
+</script>
+
+<!--
+════════════════════════════════════════════════════════
+  GOOGLE APPS SCRIPT — pega esto en script.google.com
+  como nuevo proyecto y despliégalo como Web App
+════════════════════════════════════════════════════════
+
+function doPost(e) {
+  const sheet = SpreadsheetApp.openById('ID_DE_TU_GOOGLE_SHEET').getSheetByName('Leads');
+  const data  = JSON.parse(e.postData.contents);
+
+  // Si es la primera vez, agrega encabezados
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(['Fecha', 'Email', 'Score Total', 'Nivel', 'Mente', 'Cuerpo', 'Deporte', 'Perfil']);
+  }
+
+  sheet.appendRow([
+    data.fecha,
+    data.email,
+    data.score_total,
+    data.nivel,
+    data.mente,
+    data.cuerpo,
+    data.deporte,
+    data.perfil
+  ]);
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: 'ok' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+════════════════════════════════════════════════════════
+  PASOS:
+  1. Ve a https://sheets.google.com → crea una hoja nueva
+  2. Copia el ID de la URL (la parte entre /d/ y /edit)
+  3. Ve a https://script.google.com → nuevo proyecto
+  4. Pega el código de arriba, reemplaza 'ID_DE_TU_GOOGLE_SHEET'
+  5. Guarda → Deploy → New Deployment
+     - Type: Web App
+     - Execute as: Me
+     - Who has access: Anyone
+  6. Copia la URL generada y pégala en SHEETS_WEBHOOK_URL al inicio del HTML
+════════════════════════════════════════════════════════
+-->
+
+</body>
+</html>
