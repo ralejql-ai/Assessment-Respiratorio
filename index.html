@@ -190,6 +190,16 @@ body {
 }
 .start-btn:hover  { background: #0A4A50; }
 .start-btn:active { transform: scale(.99); }
+.contact-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 1.6rem 1.3rem; }
+.contact-card h2 { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 30px; line-height: 1.1; color: var(--ink); margin: 6px 0 8px; }
+.contact-card p { font-size: 14px; color: var(--ink-muted); line-height: 1.55; margin: 0 0 1rem; }
+.contact-eyebrow { font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--coral); font-weight: 600; }
+.c-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.c-field label { font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+.c-field input { padding: 13px 14px; border-radius: var(--radius-md); border: 1px solid var(--border-mid); background: #fff; font-size: 15px; font-family: 'DM Sans', sans-serif; color: var(--ink); outline: none; }
+.c-field input:focus { border-color: var(--teal); }
+.c-hint { font-size: 12px; color: var(--ink-faint); margin: -4px 0 12px; }
+.c-error { font-size: 13px; color: var(--coral); min-height: 1.2em; margin: 4px 0 0; }
 .privacy-note {
   font-size: 11px;
   color: var(--ink-faint);
@@ -802,6 +812,50 @@ let current    = 0;
 let phase      = 'intro';
 let radarChart = null;
 let leadSaved  = false; // evitar duplicados
+let lead       = { nombre: '', wa: '', email: '' };
+
+/* ─────────────────────────────────────────
+   GUARDADO AUTOMÁTICO (Supabase)
+   Guarda cada respuesta mientras la persona avanza,
+   aunque nunca toque «Enviar». Solo Rafael puede leerlo.
+───────────────────────────────────────── */
+const SB_URL = 'https://lgtjlvfmmqaknrdfvzob.supabase.co';
+const SB_KEY = 'sb_publishable_ACr3-wNo1t7GlhX803qoRA_7q_8gTQE';
+const newId = () => { try { return crypto.randomUUID(); } catch (e) { return 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2); } };
+let SID = newId(); // un registro por cada vez que alguien hace el assessment
+let cloudDirty = false, cloudTimer = null, cloudEstado = 'borrador';
+
+function cloudPayload() {
+  const done = answers.every(a => a !== null);
+  const p = { v: 1, answers: answers.slice(), idx: current, fase: phase,
+    respondidas: answers.filter(a => a !== null).length,
+    ult: `Pregunta ${Math.min(current + 1, 15)} de 15`,
+    email: lead.email, whatsapp: lead.wa };
+  if (done) {
+    const s = calcScores(), tot = s.mind + s.body + s.sport;
+    Object.assign(p, { scores: { mind: s.mind, body: s.body, sport: s.sport, total: tot },
+      nivel: levelInfo(tot, 45).label, perfil: detectProfileType(s), imt: imtRec(s).phase,
+      bolt: getOpts(QS[9])[answers[9]], mbt: getOpts(QS[13])[answers[13]] });
+  }
+  return p;
+}
+async function cloudSave(keepalive) {
+  if (!answers.some(a => a !== null)) return true;
+  const contacto = [lead.wa, lead.email].filter(Boolean).join(' · ');
+  const body = JSON.stringify({ p_session: SID, p_tipo: 'assessment', p_modulo: 'assessment', p_disciplina: null,
+    p_nombre: lead.nombre, p_contacto: contacto, p_estado: cloudEstado, p_datos: cloudPayload() });
+  try {
+    const r = await fetch(SB_URL + '/rest/v1/rpc/guardar_registro', { method: 'POST',
+      headers: { apikey: SB_KEY, 'Content-Type': 'application/json' }, body, keepalive: !!keepalive });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    cloudDirty = false; return true;
+  } catch (e) { cloudDirty = true; console.warn('Guardado:', e); return false; }
+}
+function queueCloud() { cloudDirty = true; clearTimeout(cloudTimer); cloudTimer = setTimeout(() => cloudSave(), 1500); }
+function flushCloud() { clearTimeout(cloudTimer); if (cloudDirty) cloudSave(true); }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushCloud(); });
+window.addEventListener('pagehide', flushCloud);
+window.addEventListener('online', flushCloud);
 
 /* ─────────────────────────────────────────
    HELPERS
@@ -957,6 +1011,7 @@ function ctaContent(s, profileType) {
    LEAD CAPTURE — Google Sheets + EmailJS
 ───────────────────────────────────────── */
 async function saveLead(email) {
+  const quien = [lead.nombre, email || 'sin correo', lead.wa ? 'WhatsApp ' + lead.wa : ''].filter(Boolean).join(' · ');
   const s           = calcScores();
   const tot         = s.mind + s.body + s.sport;
   const lvl         = levelInfo(tot, 45);
@@ -997,7 +1052,7 @@ async function saveLead(email) {
   if (EMAILJS_PUBLIC_KEY !== 'TU_PUBLIC_KEY') {
     try {
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        lead_email:   email,
+        lead_email:   quien,
         score_total:  String(tot) + ' / 45',
         nivel:        lvl.label,
         mente:        s.mind + '/15',
@@ -1008,8 +1063,8 @@ async function saveLead(email) {
       }, EMAILJS_PUBLIC_KEY);
     } catch(e) { console.warn('EmailJS alerta error:', e); }
 
-    // 3. EmailJS — reporte al lead
-    try {
+    // 3. EmailJS — reporte al lead (solo si dejó correo)
+    if (email) try {
       await emailjs.send(EMAILJS_SERVICE_ID, 'template_xn1h0f6', {
         lead_email:     email,
         score_total:    String(tot) + ' / 45',
@@ -1206,7 +1261,7 @@ function renderIntro() {
           <path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <p class="privacy-note">Sin spam. Tu información es privada.</p>
+      <p class="privacy-note">Sin spam. Tus respuestas se guardan de forma privada mientras avanzas: solo Rafael Quintana las ve.</p>
     </div>
   </div>`;
 }
@@ -1254,6 +1309,53 @@ function renderQuestion(idx) {
       </button>
     </div>
   </div>`;
+}
+
+function renderContact() {
+  return `
+  <div class="contact-card">
+    <div class="contact-eyebrow">Tu reporte está listo</div>
+    <h2>¿A nombre de quién lo preparo?</h2>
+    <p>Te muestro tu resultado ahora y te envío el reporte. Si algo me llama la atención, te escribo yo para orientarte.</p>
+    <div class="c-field"><label for="cNombre">Nombre y apellido</label><input id="cNombre" autocomplete="name" value="${lead.nombre.replace(/"/g,'&quot;')}"></div>
+    <div class="c-field"><label for="cWa">WhatsApp</label><input id="cWa" type="tel" inputmode="tel" autocomplete="tel" placeholder="+58 414 000 0000" value="${lead.wa.replace(/"/g,'&quot;')}"></div>
+    <div class="c-field"><label for="cEmail">Correo</label><input id="cEmail" type="email" autocomplete="email" placeholder="tu@correo.com" value="${lead.email.replace(/"/g,'&quot;')}"></div>
+    <p class="c-hint">Déjame al menos tu WhatsApp o tu correo. Con el correo te llega el reporte en PDF.</p>
+    <p class="c-error" id="cError" role="alert"></p>
+    <div class="nav">
+      <button class="btn-back" onclick="current = 14; phase = 'quiz'; render();">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Atrás
+      </button>
+      <button class="btn-next active" id="cGo" onclick="submitContact()">
+        Ver mi reporte
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <p class="privacy-note">Tus datos son privados: solo Rafael Quintana los ve. Sin spam.</p>
+  </div>`;
+}
+
+function submitContact() {
+  const v = id => (document.getElementById(id)?.value || '').trim();
+  const nombre = v('cNombre'), wa = v('cWa'), email = v('cEmail');
+  const err = document.getElementById('cError');
+  const waOk = wa.replace(/\D/g, '').length >= 7;
+  const emOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+  if (!nombre) { err.textContent = 'Escribe tu nombre.'; return; }
+  if (!waOk && !emOk) { err.textContent = 'Déjame tu WhatsApp o un correo válido.'; return; }
+  if (email && !emOk) { err.textContent = 'Revisa el correo: parece incompleto.'; return; }
+  lead = { nombre, wa: waOk ? wa : '', email: emOk ? email : '' };
+  cloudEstado = 'completo'; cloudSave();
+  phase = 'results'; render(); window.scrollTo({ top: 0 });
+  if (lead.email && !leadSaved) { leadSaved = true; saveLead(lead.email).then(() => markLeadSent(lead.email)); }
+  else if (!leadSaved) { leadSaved = true; saveLead(''); }
+}
+
+function markLeadSent(email) {
+  const ok = document.getElementById('leadSuccessMsg'), inp = document.getElementById('leadEmailInput'), btn = document.getElementById('leadSendBtn');
+  if (inp) inp.value = email;
+  if (btn) { btn.disabled = true; btn.textContent = '✓ Enviado'; }
+  if (ok) { ok.style.display = 'flex'; }
 }
 
 function renderResults() {
@@ -1366,7 +1468,7 @@ function renderResults() {
       </button>
 
       <a class="pdf-btn-secondary" href="/ficha/#ingreso" style="text-decoration:none;margin-top:10px">
-        ¿Entrenas un deporte? Completa tu ficha deportiva →
+        ¿Entrenas un deporte? Completa tu ficha personal →
       </a>
     </div>
 
@@ -1392,6 +1494,7 @@ async function handleLeadCapture() {
 
   if (btn) { btn.disabled = true; btn.textContent = 'Guardando…'; }
 
+  lead.email = email; cloudEstado = 'enviado'; cloudSave();
   await saveLead(email);
   leadSaved = true;
 
@@ -1407,7 +1510,7 @@ async function handleLeadCapture() {
 ───────────────────────────────────────── */
 function startQuiz() { current = 0; phase = 'quiz'; render(); }
 
-function selectOpt(idx, val) { answers[idx] = val; render(); }
+function selectOpt(idx, val) { answers[idx] = val; render(); queueCloud(); }
 
 function goBack(idx) {
   if (idx > 0) { current = idx - 1; render(); }
@@ -1417,11 +1520,14 @@ function goBack(idx) {
 function goNext(idx) {
   if (answers[idx] === null) return;
   if (idx < 14) { current = idx + 1; render(); }
-  else { phase = 'results'; render(); }
+  else { phase = 'contact'; render(); queueCloud(); }
 }
 
 function restart() {
   answers = new Array(15).fill(null);
+  flushCloud();
+  SID = newId();
+  cloudEstado = 'borrador';
   current = 0; phase = 'intro'; leadSaved = false; render();
 }
 
@@ -1455,6 +1561,7 @@ function render() {
   const sc = document.getElementById('screen');
   if (phase === 'intro') { sc.innerHTML = renderIntro(); return; }
   if (phase === 'quiz')  { sc.innerHTML = renderQuestion(current); return; }
+  if (phase === 'contact') { sc.innerHTML = renderContact(); return; }
   if (phase === 'results') {
     saveForFicha();
     sc.innerHTML = renderResults();
